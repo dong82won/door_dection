@@ -1,0 +1,96 @@
+[project]
+name = "realsense-recorder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "dong82won", email = "2dongwon@gmail.com" }
+]
+requires-python = ">=3.12"
+
+dependencies = [
+    "numpy>=2.5.3",
+    "open3d>=0.20.0",
+    # "pupil-apriltags>=1.0.4.post11",
+    # "pydantic>=2.13.5",
+    "opencv-contrib-python>=5.0.0.93",
+    "pyrealsense2",
+    # "scipy>=1.18.1",
+    "scipy>=1.18.1",
+]
+
+[tool.uv.sources]
+pyrealsense2 = { path = "/home/won/PNS/100_Development/3rd_party/librealsense/wrappers/python/dist/pyrealsense2-2.58.4-cp312-cp312-linux_x86_64.whl" }
+
+
+[project.scripts]
+realsense-recorder = "realsense_recorder.main_demo:main"
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"
+
+
+# ==========================================
+# 1. 개발 전용 의존성 (Dev Dependencies)
+# ==========================================
+[dependency-groups]
+dev = [
+    "ruff>=0.3.0",
+    "pytest>=8.0.0",
+]
+
+# ==========================================
+# 2. Ruff 전체 환경 설정
+# ==========================================
+[tool.ruff]
+# 파이썬 3.12+ 타겟 최적화
+target-version = "py312"
+# 한 줄 최대 길이 (Python 표준 PEP 8 및 Black 권장값: 88자)
+line-length = 120
+
+# 검사에서 제외할 폴더
+exclude = [
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+# ==========================================
+# 3. Ruff Linter (코드 품질 및 에러 검사)
+# ==========================================
+[tool.ruff.lint]
+# 사용할 규칙 세트 지정
+# E/W: PEP 8 기본 스타일 에러/경고 (pycodestyle)
+# F: 버그 가능성 및 미사용 변수 검사 (Pyflakes)
+# I: import 구문 자동 정렬 (isort)
+# B: 흔히 하는 실수 및 버그 패턴 감지 (flake8-bugbear)
+# UP: Python 3.12+ 최신 문법 스타일로 자동 변환 권장 (pyupgrade)
+select = ["E", "F", "I", "B", "UP"]
+ignore = []
+# 저장 시 자동 수정(fix)을 허용할 규칙
+fixable = ["ALL"]
+
+[tool.ruff.lint.isort]
+# 내부 모듈(내 프로젝트 코드)을 식별하여 import 순서 정리 시 구분
+known-first-party = ["opencv_test_uv"]
+
+# ==========================================
+# 4. Ruff Formatter (코드 자동 스타일 정렬)
+# ==========================================
+[tool.ruff.format]
+# 큰따옴표("") 사용
+quote-style = "double"
+# 들여쓰기는 공백(Space) 4칸
+indent-style = "space"
+# 줄바꿈 문자 자동 감지
+line-ending = "auto"
+
+# ==========================================
+# 5. Pytest (단위 테스트 도구) 설정
+# ==========================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+

@@ -1,0 +1,20 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+
+  "python.analysis.packageIndexDepths": [
+    {
+      "name": "pyrealsense2",
+      "depth": 3,
+      "includeAllSymbols": true
+    }
+  ],
+
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportAttributeAccessIssue": "none",
+    "reportUnknownMemberType": "none"
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "width": 640,
+    "height": 480,
+    "fps": 30,
+    "tag_size_m": 0.06,
+    "target_offset_x_m": 0.11964289056173587,
+    "target_offset_y_m": -0.05422107337333821,
+    "base_height_m": 0.04,
+    "tip_offset_x_m": 0.11964289056173587,
+    "tip_offset_y_m": -0.05422107337333821,
+    "tip_roi_w_m": 0.04,
+    "tip_roi_h_m": 0.035,
+    "pop_threshold_m": 0.055
+}
