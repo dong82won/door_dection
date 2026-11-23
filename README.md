@@ -1,42 +1,68 @@
-RealSense Lever Grasp Inspector 🤖📹
-Intel RealSense RGB-D 카메라를 활용한 상단 힌지 레버 6-DoF 파지(Grasp) 인스펙터입니다.
+# RealSense RGB-D Lever 6-DoF Grasp Inspector
 
-AprilTag 마커 인식을 기반으로 레버 손잡이의 3차원 6-DoF 자세를 추정하고, 가상 로봇 그리퍼의 파지 시뮬레이션 및 깊이(Depth) 맵 분석 결과를 4채널 대시보드를 통해 실시간으로 제공합니다.
-🌟 주요 기능 (Key Features)
-실시간으로 제공되는 2x2 분할 대시보드 화면을 통해 다음 4가지 뷰를 확인할 수 있습니다:
-1.	[View 1] RGB 3D Pose HUD: RGB 화면상에 AprilTag 3축 및 계산된 손잡이 타겟의 3축(X, Y, Z) 렌더링.
-2.	[View 2] Local Protrusion Colormap: 도어 면을 기준으로 한 국소 돌출 깊이맵(Depth Map, 0~8cm) 컬러맵 시각화.
-3.	[View 3] RGB-D Overlay Blend: RGB 뷰와 Depth 뷰의 반투명 블렌딩(55:45 비율)을 통한 정합 투시 뷰.
-4.	[View 4] Virtual Gripper Clearance: 마젠타(Pink) 색상의 평행 2핑거 가상 로봇 그리퍼 파지 시뮬레이션 뷰.
-·	실시간 녹화 기능: 대시보드 화면을 MP4 비디오 형식으로 실시간 녹화할 수 있습니다.
-🛠️ 하드웨어 요구사항 (Hardware Requirements)
-·	카메라: Intel RealSense D435 (또는 호환되는 RealSense RGB-D 카메라)
-·	타겟 마커: AprilTag (Family: tag36h11, Size: 6cm)
-📦 설치 방법 (Installation)
-이 프로젝트는 Python 3.8 이상 환경에서 실행하는 것을 권장합니다.
-1.	레포지토리를 클론합니다.
-git clone https://github.com/yourusername/lever-grasp-inspector.git
-cd lever-grasp-inspector
+![RealSense](https://img.shields.io/badge/Intel-RealSense-blue)
+![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 
-2.	필요한 Python 패키지를 설치합니다.
-pip install opencv-python numpy pyrealsense2 scipy
+**RealSense RGB-D 기반 상단 힌지 레버 6-DoF 파지(Grasp) 인스펙터**는 로봇 매니퓰레이터가 도어 레버(손잡이)를 정확하게 파지하고 조작할 수 있도록 돕는 실시간 비전 인식 및 시각화 도구입니다. AprilTag 마커와 Depth 정보를 융합하여 레버의 3차원 자세를 추정하고, 열림/닫힘 상태를 감지하며, 가상 2핑거 평행 그리퍼의 접근 가능성을 시뮬레이션합니다.
 
-3.	(권장) 성능 향상 및 더 정교한 AprilTag 인식을 위해 pupil-apriltags 패키지를 추가로 설치하는 것을 적극 권장합니다. (미설치 시 OpenCV의 기본 Aruco 모듈로 대체되어 동작합니다.)
+## 🌟 주요 기능 (Key Features)
+
+- **정밀한 6-DoF 자세 추정**: AprilTag(tag36h11)를 기준으로 도어 손잡이의 정확한 3차원 위치(X, Y, Z)와 회전(Roll, Pitch, Yaw) 추정.
+- **깊이(Depth) 기반 상태 감지**: 도어 평면을 기준으로 손잡이의 돌출 깊이를 측정하여 레버의 열림/닫힘 상태 판별.
+- **가상 그리퍼 시뮬레이션**: 목표 파지 위치에 로봇 그리퍼(80mm 스트로크) 3D 모델을 투영하여 간섭 여부 시각적 확인.
+- **4채널 실시간 대시보드**:
+  - `View 1`: RGB 화면상 3D Pose HUD 렌더링
+  - `View 2`: 도어면 기준 국소 돌출 깊이맵 (Colormap, 0~8cm)
+  - `View 3`: RGB-D 반투명 블렌딩 정합 투시 뷰
+  - `View 4`: 마젠타(Pink) 가상 평행 그리퍼 파지 시뮬레이션 뷰
+- **대시보드 실시간 녹화**: `R` 키를 이용한 2x2 대시보드 화면 실시간 MP4 녹화 기능.
+
+## 🛠 하드웨어 요구사항 (Hardware Requirements)
+
+- **카메라**: Intel RealSense Depth Camera (D435 등 RGB-D 지원 모델)
+- **마커**: 크기 6cm의 AprilTag (Family: `tag36h11`)
+
+## 📦 설치 및 의존성 (Installation & Dependencies)
+
+이 프로젝트는 Python 3.8 이상에서 동작합니다. 아래 명령어를 통해 필요한 패키지를 설치하십시오.
+
+```bash
+pip install numpy opencv-python opencv-contrib-python pyrealsense2 scipy
+```
+
+> **Note**: AprilTag 인식률을 높이기 위해 `pupil_apriltags` 패키지 사용을 권장합니다. 설치되어 있지 않은 경우 OpenCV의 기본 Aruco 모듈로 자동 대체되어 동작합니다.
+```bash
 pip install pupil-apriltags
+```
 
-🚀 실행 및 조작법 (Usage)
-RealSense 카메라를 PC에 연결한 후, 다음 명령어를 통해 메인 스크립트를 실행합니다.
+## 🚀 사용 방법 (Usage)
+
+1. RealSense 카메라를 PC에 연결합니다.
+2. 타겟 도어(레버 근처 지정된 위치)에 6cm AprilTag를 부착합니다.
+3. 메인 스크립트를 실행합니다.
+
+```bash
 python main_demo.py
+```
 
-단축키 (Keyboard Controls)
-Key	Description
-[R]	🎥 실시간 4채널 대시보드 동영상 녹화 시작 / 종료 토글 (루트 디렉토리에 .mp4 저장)
-[Q]	⏹️ 프로그램 안전 종료
+### ⌨️ 조작 키 (Key Bindings)
 
-⚙️ 기구학 설정 (Kinematics Configuration)
-main_demo.py 내부의 LeverKinematicsConfig 데이터 클래스를 수정하여 환경에 맞게 파라미터를 조정할 수 있습니다.
-·	마커 및 오프셋: tag_size_m, handle_offset_x_m, handle_offset_y_m 등을 통해 마커와 손잡이 간의 실제 물리적 거리를 설정합니다.
-·	그리퍼 설정: gripper_stroke_m, finger_width_m 등 가상으로 렌더링 될 2핑거 로봇 그리퍼의 치수를 정의합니다.
-·	필터 계수: filter_alpha 값을 조정하여 3D 좌표 추정 시 발생하는 떨림(Jitter)을 제어할 수 있습니다.
-📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **`R` 키**: 4채널 대시보드 화면의 실시간 동영상 녹화를 시작하거나 종료합니다. (현재 디렉토리에 `lever_record_YYYYMMDD_HHMMSS.mp4` 형태로 자동 저장됩니다.)
+- **`Q` 키**: 프로그램을 안전하게 종료합니다.
+
+## ⚙️ 시스템 설정 (Configuration)
+
+기구학 파라미터 및 센서 설정은 코드 내 `LeverKinematicsConfig` 클래스에서 수정할 수 있습니다.
+실제 환경에 맞게 로봇 그리퍼 치수나 마커와 손잡이 간의 오프셋 거리를 조정하여 사용하십시오.
+
+```python
+# 예시: main_demo.py 내부 파라미터
+tag_size_m = 0.06           # AprilTag 크기 (6cm)
+handle_offset_x_m = 0.092   # 마커 기준 손잡이 X 오프셋 (9.2cm)
+gripper_stroke_m = 0.080    # 그리퍼 최대 벌림 폭 (80mm)
+```
+
+## 📝 라이선스 (License)
+
+이 프로젝트는 MIT 라이선스에 따라 배포됩니다.
